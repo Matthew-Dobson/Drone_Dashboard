@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" href={{ url_for('static', filename='display.css') }}>
+
+    <title>Grid Layout</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+
+<body>
+    <h1 style="text-align: center;">Drone Dashboard</h1>
+
+    <div class="grid-container">
+
+        <div class="left-panel">
+            <h1>Future Buttons</h1>
+        </div>
+
+        <div class="map-panel">
+            <img src="{{ url_for('static', filename='map.jpg')}}" alt="Map">
+        </div>
+
+        <div class="drone-updates-container">
+            <div id="drone-data">
+                <h1>Drone Info</h1>
+                <p>Coordinates: <span id="coords"></span></p>
+                <p>Height: <span id="height"></span></p>
+                <p>Speed: <span id="speed"></span></p>
+            </div>
+
+            <div id="drone-2">
+                <h1>Drone 2</h1>
+                    <p>Coordinates</p>
+                    <p>Height</p>
+                    <p>Speed</p>
+            </div>
+
+            <div id="drone-3">
+                <h1>Drone 3</h1>
+                    <p>Coordinates</p>
+                    <p>Height</p>
+                    <p>Speed</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchDroneData() {
+            try {
+                const response = await fetch('/drone-data'); // Adjust this URL if needed
+                const data = await response.json();
+
+                // Update HTML content
+                document.getElementById('coords').textContent = `(${data.coords[0]}, ${data.coords[1]})`;
+                document.getElementById('height').textContent = data.height;
+                document.getElementById('speed').textContent = data.speed;
+            } catch (error) {
+                console.error('Error fetching drone data:', error);
+            }
+        }
+
+        // Fetch data every 2 seconds
+        setInterval(fetchDroneData, 1000);
+        fetchDroneData(); // Initial call
+    </script>
+
+
+
+</body>
+</html>
